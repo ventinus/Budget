@@ -123,6 +123,7 @@ const removeRecurring = id => (dispatch, getState) => {
 
 const updateRecurring = (updates, skipProcessing = false) => (dispatch, getState) => {
   const whichUpdates = skipProcessing ? updates : processRecurringProps(updates)
+  // console.log(whichUpdates)
   dispatch({
     id: updates.id,
     updates: {

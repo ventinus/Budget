@@ -1,12 +1,14 @@
-import React, {Component} from 'react'
-import {View, Text} from 'react-native'
+// Accounts Component
+import {connect} from 'react-redux'
+import Accounts from './Accounts'
+import {findEventsByType} from '../../utils'
+import {recurringEventTypes} from '../../variables'
 
-export default class Accounts extends Component {
-  render() {
-    return (
-      <View>
-        <Text>Accounts page</Text>
-      </View>
-    )
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  budgets: state.budgets,
+  cashAccounts: Object.values(state.cashAccounts),
+  incomeEvents: findEventsByType(state.recurringEvents, recurringEventTypes.deposit),
+  expenseEvents: findEventsByType(state.recurringEvents, recurringEventTypes.expense)
+})
+
+export default connect(mapStateToProps)(Accounts)

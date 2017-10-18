@@ -3,7 +3,7 @@ import metrics from './metrics'
 import colors from './colors'
 
 export const layoutStyles = {
-  paddingTop: metrics.statusBarHeight + metrics.navBarHeight + 10,
+  paddingTop: metrics.statusBarHeight,
   backgroundColor: colors.defaultPageBg,
   flex: 1
 }

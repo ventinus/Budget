@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, NetInfo, Platform} from 'react-native'
+import {AsyncStorage, NetInfo, Platform, StatusBar} from 'react-native'
 import {Provider} from 'react-redux'
 import {persistStore} from 'redux-persist';
 import configureStore from './store/configureStore'
@@ -13,6 +13,11 @@ const persistConfig = { storage: AsyncStorage, whitelist: [] }
 
 class App extends Component {
   state = {rehydrated: false}
+
+  constructor() {
+    super()
+    StatusBar.setBarStyle('light-content')
+  }
 
   componentWillMount () {
     persistStore(store, persistConfig, () => { this.setState({rehydrated: true}) })
