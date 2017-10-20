@@ -1,0 +1,41 @@
+{
+  "incomeSources": {
+    "[id]": {
+      "name": "",
+      "amount": "",
+      "date": "",
+      "interval": "", // one of intervalTypes
+      "depositAccount": "[cashAccountId]",
+      "note": ""
+    }
+  },
+  "recurringExpenses": {
+    "[id]": {
+      "name": "",
+      "amount": "",
+      "date": "",
+      "interval": "", // one of intervalTypes
+      "note": ""
+    }
+  },
+  "cashAccounts": {
+    "[id]": {
+      "name": "",
+      "amount": ""
+    }
+  },
+  "budgets": {
+    "[id]": {
+      "name": "",
+      "savingGoal": "",
+      "interval": ""
+    }
+  },
+  "settings": {
+    "currency": "USD",
+    "projection": {
+      "type": "", // days || weeks || months || years
+      "count": "" // number
+    }
+  }
+}

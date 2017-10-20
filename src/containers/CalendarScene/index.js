@@ -1,15 +1,11 @@
-import React, {Component} from 'react'
-import {View, Text} from 'react-native'
-import ScreenHOC from '../ScreenHOC'
+// @flow
+// CalendarScene Component
+import {connect} from 'react-redux'
+import {groupEventsByDate} from '../../utils'
+import CalendarScene from './CalendarScene'
 
-export default class CalendarScene extends Component {
-  render() {
-    return (
-      <ScreenHOC>
-        <View>
-          <Text>Calendar page</Text>
-        </View>
-      </ScreenHOC>
-    )
-  }
-}
+const mapStateToProps = ({recurringEvents}) => ({
+  groupedRecurringEvents: groupEventsByDate(recurringEvents)
+})
+
+export default connect(mapStateToProps)(CalendarScene)

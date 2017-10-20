@@ -27,8 +27,6 @@ const recurringEvents = (state = {}, action) => {
     case REMOVE_RECURRING_EVENT:
       return omit(state, action.id)
     case UPDATE_RECURRING_EVENT:
-      // console.log(action.updates)
-      // debugger
       return {
         ...omit(state, action.id),
         [action.updates.id]: createRecurringEvent(action.updates)

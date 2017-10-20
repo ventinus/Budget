@@ -62,7 +62,7 @@ const AccountGroup = ({name, data, themeColor, onAddPress, onAccountPress}) => {
             topRightText={date}
             bottomLeftText={interval}
             rightText={amount}
-            onPress={() => onAccountPress(parameterizeName(name), eventType)}
+            onPress={() => {console.log('press', eventType), onAccountPress(parameterizeName(name), eventType)}}
           />
         )}
       </View>

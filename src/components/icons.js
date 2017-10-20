@@ -12,3 +12,5 @@ export const AccountIcon = ({size = 30, color = '#900'}) => (<MIcon name="accoun
 export const CalendarIcon = ({size = 30, color = '#900'}) => (<FeatherIcon name="calendar" size={size} color={color} />)
 
 export const SettingsIcon = ({size = 30, color = '#900'}) => (<MIcon name="settings" size={size} color={color} />)
+
+export const BackIcon = ({size = 35, color = '#777'}) => (<FeatherIcon name='chevron-left' size={size} color={color} />)

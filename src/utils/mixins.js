@@ -3,7 +3,9 @@ import moment from 'moment'
 import {dateFormat, recurringEventTypes} from '../variables'
 
 export const formatDateCollection = (date, collection) => {
-  if (Array.isArray(collection)) return collection
+  if (Array.isArray(collection)) {
+    return collection.length === 0 ? [date] : collection
+  }
 
   const {relDates} = collection
   const col = !relDates ? collection : omit(collection, 'relDates')

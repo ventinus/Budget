@@ -1,16 +1,16 @@
 import React from 'react'
-import { TabNavigator } from 'react-navigation'
-import {HomeIcon, AccountIcon, CalendarIcon, SettingsIcon} from './components'
+import { StackNavigator, TabNavigator } from 'react-navigation'
+import {HomeIcon, AccountIcon, CalendarIcon, SettingsIcon, StackHeader} from './components'
 
 import {
   Home,
   Accounts,
   CalendarScene,
-  Settings
+  Settings,
+  DayBreakdown
 } from './containers'
 
-
-const routes =  {
+const tabRoutes =  {
   Home: {
     screen: Home,
     navigationOptions: {
@@ -41,10 +41,34 @@ const routes =  {
   }
 }
 
-const Navigator = TabNavigator(routes, {
+const MainNavigator = TabNavigator(tabRoutes, {
   tabBarOptions: {
     activeTintColor: '#f00'
   }
+})
+
+const Navigator = StackNavigator({
+  Home: {
+    screen: MainNavigator,
+    navigationOptions: {
+      header: null
+    }
+  },
+  DayBreakdown: {
+    screen: DayBreakdown,
+    navigationOptions: {
+      header(a, b, c) {
+        return (<StackHeader title='Day Breakdown' {...a} />)
+      }
+    }
+  }
+}, {
+  mode: 'modal',
+  transitionConfig: () => ({
+     transitionSpec: {
+       duration: 150
+     }
+   })
 })
 
 export default Navigator

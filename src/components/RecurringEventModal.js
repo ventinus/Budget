@@ -33,7 +33,7 @@ class RecurringEventModal extends Component {
   _requiredInputs = ['name', 'amount']
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.eventId !== this.props.eventId) {
+    if (nextProps.eventId !== this.props.eventId || nextProps.eventId === '') {
       this._selectedEvent = nextProps.recurringEvents[nextProps.eventId]
       this._isEditing = !!this._selectedEvent
 
@@ -153,6 +153,7 @@ class RecurringEventModal extends Component {
       id: this.props.eventId,
       eventType: this.props.eventType
     })
+
   }
 }
 

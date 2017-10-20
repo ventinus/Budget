@@ -218,3 +218,24 @@ There are a few steps you may want to take to troubleshoot these kinds of errors
 If you're not able to scan the QR code, make sure your phone's camera is focusing correctly, and also make sure that the contrast on the two colors in your terminal is high enough. For example, WebStorm's default themes may [not have enough contrast](https://github.com/react-community/create-react-native-app/issues/49) for terminal QR codes to be scannable with the system barcode scanners that the Expo app uses.
 
 If this causes problems for you, you may want to try changing your terminal's color theme to have more contrast, or running Create React Native App from a different terminal. You can also manually enter the URL printed by the packager script in the Expo app's search bar to load it manually.
+
+### TODOS
+
+next:
+- switch to using a tab nav on the bottom of the screen rather than the navigation route. back button replaces current menu/close buttons
+- always show current cash acount totals in day breakdown
+- allow way to delete accounts
+  - should not be able to delete account if it has recurringEvents. or do a dependent destroy. maybe display message saying all associated events will be destroyed and must confirm
+
+future:
+- add sorting options to accounts page (name, date, amount... all 'columns') and up|down
+- add transactions to track single deposits and expenses?
+  - create/add label to transactions (labels are automatically created by account/recurrent event names)
+- style DayBreakdown page
+- create Summary container (home page?) with some stats
+  - lowest and highest amounts
+  - cumulative totals on a weekly/monthly basis (local state option)
+  - add some kind of trends overview (based on defined budgets)
+- add budgets and incorporate how budgets are utilized in forecast
+- add notification for falling below comfort level
+- add error messages for input fields

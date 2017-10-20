@@ -38,20 +38,16 @@ class Accounts extends Component {
             name='Income Sources'
             data={incomeEvents}
             themeColor={colors.stone}
-            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', recurringEventTypes.deposit)}
+            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.deposit)}
             onAccountPress={this._setRecurringEvent}
-            // onAddPress={() => {Actions.recurringEventModal({eventType: recurringEventTypes.deposit})}}
-            // onAccountPress={(eventId, eventType) => Actions.recurringEventModal({eventId, eventType})}
           />
 
           <AccountGroup
             name='Recurring Expenses'
             data={expenseEvents}
             themeColor={colors.autumn}
-            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', recurringEventTypes.expense)}
+            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.expense)}
             onAccountPress={this._setRecurringEvent}
-            // onAddPress={() => {Actions.recurringEventModal({eventType: recurringEventTypes.expense})}}
-            // onAccountPress={(eventId, eventType) => Actions.recurringEventModal({eventId, eventType})}
           />
           <CashAccountModal
             isVisible={this.state.cashModalVisible}
@@ -67,14 +63,13 @@ class Accounts extends Component {
           />
 
         </ScrollView>
-
       </ScreenHOC>
     )
   }
 
   _setModalVisibility = (name, isVisible) => () => this.setState({[`${name}ModalVisible`]: isVisible})
 
-  _revealNew = (type, modalKey, eventType) => () => this.setState({[type]: '', [modalKey]: true, [eventType]: ''})
+  _revealNew = (type, modalKey, eventTypeKey, eventTypeVal) => () => this.setState({[type]: '', [modalKey]: true, [eventTypeKey]: eventTypeVal})
 
   _setCashAccountId = accountId => this.setState({cashAccountId: accountId, cashModalVisible: true})
 
