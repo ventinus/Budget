@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import {Modal, AmountInput, DateSelect, IntervalTypesPicker, SimpleTextInput, DrawerPicker} from '.'
+import {Modal, AmountInput, DateSelect, IntervalTypesPicker, SimpleTextInput, DrawerPicker, NotificationModal} from '.'
 import {parameterizeName} from '../utils'
 import {commonStyles, colors, intervalTypes, dateFormat} from '../variables'
-import {addRecurringEvent, updateRecurringEvent} from '../actions'
+import {addRecurringEvent, removeRecurringEvent, updateRecurringEvent} from '../actions'
 
 class RecurringEventModal extends Component {
   static propTypes = {
@@ -19,29 +19,26 @@ class RecurringEventModal extends Component {
   constructor (props) {
     super(props)
 
-    this._selectedEvent = props.recurringEvents[props.eventId]
 
-    this.state = this._determineState()
+    this.state = {
+      ...this._determineState(),
+      notificationIsVisible: false,
+      notificationIssue: {}
+    }
 
-    this._currEventId = props.eventId
-    this._isEditing = !!this._selectedEvent
-
-    this._eventIds = Object.keys(props.recurringEvents)
-    this._filteredIds = this._eventIds.filter(id => id !== this._currEventId)
+    this._setValues(props)
   }
 
   _requiredInputs = ['name', 'amount']
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.eventId !== this.props.eventId || nextProps.eventId === '') {
-      this._selectedEvent = nextProps.recurringEvents[nextProps.eventId]
-      this._isEditing = !!this._selectedEvent
+    if (!this.props.isVisible && nextProps.isVisible) {
+      this._setValues(nextProps)
 
-      this._currEventId = nextProps.eventId
-      this._eventIds = Object.keys(nextProps.recurringEvents)
-      this._filteredIds = this._eventIds.filter(id => id !== this._currEventId)
-
-      this.setState(this._determineState())
+      this.setState({
+        ...this.state,
+        ...this._determineState()
+      })
     }
   }
 
@@ -52,6 +49,7 @@ class RecurringEventModal extends Component {
         onDone={this._onDone}
         onClose={this.props.onClose}
         modalVisible={this.props.isVisible}
+        name='recurring'
       >
         <ScrollView>
           <SimpleTextInput
@@ -92,6 +90,13 @@ class RecurringEventModal extends Component {
             placeholder='Enter Note'
           />
         </ScrollView>
+
+        <NotificationModal
+          isVisible={this.state.notificationIsVisible}
+          onConfirm={this._onNotificationConfirm}
+          onCancel={this._onNotificationCancel}
+          issue={this.state.notificationIssue}
+        />
       </Modal>
     )
   }
@@ -123,6 +128,15 @@ class RecurringEventModal extends Component {
     )
   }
 
+  _setValues = props => {
+    this._currEventId = props.eventId
+    this._selectedEvent = props.recurringEvents[this._currEventId]
+    this._isEditing = !!this._selectedEvent
+
+    this._eventIds = Object.keys(props.recurringEvents)
+    this._filteredIds = this._eventIds.filter(id => id !== this._currEventId)
+  }
+
   _onTextChange = (category, text) => this.setState({[category]: text})
 
   _onAccountChange = account => this.setState({account})
@@ -146,20 +160,55 @@ class RecurringEventModal extends Component {
   }
 
   _onDone = () => {
-    this.props.onClose()
+    const currentAlerts = this.props.fullState.forecast.alerts
     const action = this._isEditing ? 'updateRecurringEvent' : 'addRecurringEvent'
+
     this.props[action]({
       ...this.state,
       id: this.props.eventId,
       eventType: this.props.eventType
-    })
+    }).then(nextState => {
+      const {forecast: {alerts}, recurringEvents} = nextState
+      const alertKeys = Object.keys(alerts)
+      const currentAlertKeys = Object.keys(currentAlerts)
+      const diffAlert = alertKeys.find((val, i) => val !== currentAlertKeys[i])
 
+      if (!diffAlert) {
+        this.props.onClose()
+      } else {
+        this.setState({
+          notificationIsVisible: true,
+          notificationIssue: {[diffAlert]: alerts[diffAlert]}
+        })
+      }
+
+    })
+  }
+
+  _onNotificationCancel = () => {
+    this.setState({notificationIsVisible: false})
+    // undo changed state
+    const action = this._isEditing ? 'updateRecurringEvent' : 'removeRecurringEvent'
+    // console.log(this.state)
+    // debugger
+    const paramName = parameterizeName(this.state.name)
+    this.props[action](paramName)
+  }
+
+  _onNotificationConfirm = () => {
+    this.setState({notificationIsVisible: false})
+
+    // when closing 2 modals simultaneously, the outermost modal needs to be delayed otherwise it wont close
+    setTimeout(() => {
+      this.props.onClose()
+    }, 1)
   }
 }
 
 const mapStateToProps = state => ({
   recurringEvents: state.recurringEvents,
   cashAccounts: Object.keys(state.cashAccounts),
+  fullState: state
 })
 
-export default connect(mapStateToProps, {addRecurringEvent, updateRecurringEvent})(RecurringEventModal)
+export default connect(mapStateToProps, {addRecurringEvent, removeRecurringEvent, updateRecurringEvent})(RecurringEventModal)

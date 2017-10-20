@@ -8,10 +8,11 @@ export const setIsConnected = (isConnected) => ({
 })
 
 export const updateForecast = () => (dispatch, getState) => {
-  return dispatch({
-    type: actionTypes.UPDATE_FORECAST,
+  dispatch({
+    type: actionTypes.SET_FORECAST,
     forecast: calcForecast(getState())
   })
+  return Promise.resolve(getState())
 }
 
 // Budget Action Creators

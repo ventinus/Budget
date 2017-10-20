@@ -12,7 +12,6 @@ import {
 } from 'react-native'
 import {now} from 'lodash'
 import moment from 'moment'
-// import {moneyFormat} from '../../utils'
 import {layoutStyles, colors, commonStyles, dateFormat, metrics} from '../../variables'
 import {styles} from './styles.js'
 

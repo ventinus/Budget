@@ -1,76 +1,57 @@
-import React, {Component, PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   View, Text, TouchableOpacity,
   Modal as RNModal
 } from 'react-native'
 import styles from './styles'
 
-export default class Modal extends Component {
-  static propTypes = {
-    onDone: PropTypes.func,
-    onClose: PropTypes.func,
-    renderButtons: PropTypes.bool,
-    cancelText: PropTypes.string,
-    doneText: PropTypes.string,
-    modalVisible: PropTypes.bool,
-    showDone: PropTypes.bool
-  }
-
-  static defaultProps = {
-    onDone: () => {},
-    onClose: () => {},
-    renderButtons: true,
-    cancelText: 'Cancel',
-    doneText: 'Done',
-    modalVisible: false,
-    showDone: true
-  }
-
-  state = {
-    modalVisible: this.props.modalVisible
-  }
-
-  componentWillReceiveProps({modalVisible}) {
-    if (modalVisible !== this.props.modalVisible) {
-      this.setState({modalVisible})
-    }
-  }
-
-  render () {
-    return (
-      <View>
-        <RNModal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}
-          >
-          <View style={styles.modalInner}>
-            {this.props.renderButtons &&
-              <View style={styles.btnsWrapper}>
-                <TouchableOpacity onPress={this._closeModal}>
-                  <Text style={styles.cancelText}>{this.props.cancelText}</Text>
-                </TouchableOpacity>
-                {this.props.showDone &&
-                  <TouchableOpacity onPress={this._handleDone}>
-                    <Text style={styles.doneText}>{this.props.doneText}</Text>
-                  </TouchableOpacity>
-                }
-              </View>
+const Modal = props => (
+  <View>
+    <RNModal
+      animationType="slide"
+      transparent={true}
+      visible={props.modalVisible}
+      >
+      <View style={styles.modalInner}>
+        {props.renderButtons &&
+          <View style={styles.btnsWrapper}>
+            <TouchableOpacity onPress={props.onClose}>
+              <Text style={styles.cancelText}>{props.cancelText}</Text>
+            </TouchableOpacity>
+            {props.showDone &&
+              <TouchableOpacity onPress={props.onDone}>
+                <Text style={styles.doneText}>{props.doneText}</Text>
+              </TouchableOpacity>
             }
-            { this.props.children }
           </View>
-        </RNModal>
+        }
+        { props.children }
       </View>
-    )
-  }
+    </RNModal>
+  </View>
+)
 
-  _closeModal = () => {
-    this.setState({modalVisible: false})
-    this.props.onClose()
-  }
-
-  _handleDone = () => {
-    this.setState({modalVisible: false})
-    this.props.onDone()
-  }
+Modal.propTypes = {
+  onDone: PropTypes.func,
+  onClose: PropTypes.func,
+  renderButtons: PropTypes.bool,
+  cancelText: PropTypes.string,
+  doneText: PropTypes.string,
+  modalVisible: PropTypes.bool,
+  showDone: PropTypes.bool,
+  name: PropTypes.string
 }
+
+Modal.defaultProps = {
+  onDone: () => {},
+  onClose: () => {},
+  renderButtons: true,
+  cancelText: 'Cancel',
+  doneText: 'Done',
+  modalVisible: false,
+  showDone: true,
+  name: 'default name'
+}
+
+export default Modal
