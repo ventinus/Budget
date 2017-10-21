@@ -19,7 +19,6 @@ class RecurringEventModal extends Component {
   constructor (props) {
     super(props)
 
-
     this.state = {
       ...this._determineState(),
       notificationIsVisible: false,
@@ -188,11 +187,18 @@ class RecurringEventModal extends Component {
   _onNotificationCancel = () => {
     this.setState({notificationIsVisible: false})
     // undo changed state
-    const action = this._isEditing ? 'updateRecurringEvent' : 'removeRecurringEvent'
-    // console.log(this.state)
-    // debugger
-    const paramName = parameterizeName(this.state.name)
-    this.props[action](paramName)
+    if (this._isEditing) {
+      this.props.updateRecurringEvent({
+        ...this._selectedEvent,
+        id: this.props.eventId,
+        interval: {
+          type: this._selectedEvent.interval,
+          frequency: this._selectedEvent.frequency
+        }
+      })
+    } else {
+      this.props.removeRecurringEvent(parameterizeName(this.state.name))
+    }
   }
 
   _onNotificationConfirm = () => {
