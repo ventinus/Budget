@@ -4,8 +4,7 @@ const DEFAULT_STATE = {
   projection: {
     type: 'month',
     count: 6
-  },
-  comfortableMin: 500
+  }
 }
 
 const settings = (state = DEFAULT_STATE, action) => {

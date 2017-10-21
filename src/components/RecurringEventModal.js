@@ -159,7 +159,7 @@ class RecurringEventModal extends Component {
   }
 
   _onDone = () => {
-    const currentAlerts = this.props.fullState.forecast.alerts
+    const currentAlerts = this.props.alerts
     const action = this._isEditing ? 'updateRecurringEvent' : 'addRecurringEvent'
 
     this.props[action]({
@@ -214,7 +214,7 @@ class RecurringEventModal extends Component {
 const mapStateToProps = state => ({
   recurringEvents: state.recurringEvents,
   cashAccounts: Object.keys(state.cashAccounts),
-  fullState: state
+  alerts: state.forecast.alerts
 })
 
 export default connect(mapStateToProps, {addRecurringEvent, removeRecurringEvent, updateRecurringEvent})(RecurringEventModal)

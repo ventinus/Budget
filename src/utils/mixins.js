@@ -41,7 +41,7 @@ export const formatAmount = (amount, eventType) => {
 export const calcForecast = ({
   cashAccounts,
   recurringEvents,
-  settings: {projection, comfortableMin}
+  settings: {projection}
 }) => {
   const groupedEvents = groupEventsByDate(recurringEvents)
   const today = moment()
@@ -76,7 +76,7 @@ export const calcForecast = ({
       }
       allTotals.push(newAmount)
 
-      if (newAmount >= comfortableMin) {
+      if (newAmount >= cashAccounts[account].comfortableMin) {
         dates = mapTotalsToDate()
         return
       }

@@ -6,7 +6,8 @@ import {cashAccountsSeed} from '../../seeds'
 
 const createCashAccount = props => ({
   name: props.name,
-  amount: props.amount
+  amount: props.amount,
+  comfortableMin: props.comfortableMin
 })
 
 const cashAccounts = (state = cashAccountsSeed, action) => {

@@ -43,7 +43,8 @@ const dispatchAndUpdateForecast = actionCreator => props => dispatch => {
 const processCashAccountProps = props => ({
   id: parameterizeName(props.name),
   amount: +props.amount,
-  name: props.name
+  name: props.name,
+  comfortableMin: +props.comfortableMin
 })
 
 export const addCashAccount = props => ({
@@ -80,11 +81,11 @@ export const updateCashAccount = (id, updates) => (dispatch, getState) => {
         account: parameterizeName(updates.name)
       }
 
-      return dispatch(updateRecurring(eventUpdates, true))
+      dispatch(updateRecurring(eventUpdates, true))
     })
 
     return dispatch(updateForecast())
-  })
+  }).then(() => Promise.resolve(getState()))
 }
 
 // Recurring Event Action Creators
