@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   info: {
-    textAlign: 'center',
-    // fontSize:
+    textAlign: 'center'
   },
   buttons: {
     flexDirection: 'row',
@@ -52,9 +51,8 @@ class NotificationModal extends Component {
 
   render() {
     const {onCancel, onConfirm, isVisible, issue} = this.props
-    console.log('notif', this.props)
+
     const [date, issueData] = toPairs(issue)[0] || ['', {ids: []}]
-    // debugger
 
     return (
       <Modal

@@ -24,3 +24,18 @@ export const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday
 export const ordinals = ['first', 'second', 'third', 'fourth', 'fifth']
 
 export const dateFormat = 'YYYY-MM-DD'
+
+export const currencies = {
+  'USD': {
+    symbol: '$'
+  },
+  'EUR': {
+    symbol: '€'
+  },
+  'GBP': {
+    symbol: '£'
+  },
+  'JPY': {
+    symbol: '¥'
+  }
+}

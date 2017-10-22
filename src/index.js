@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import {AsyncStorage, NetInfo, Platform, StatusBar} from 'react-native'
 import {Provider} from 'react-redux'
 import {persistStore} from 'redux-persist';
-import configureStore from './store/configureStore'
+import store from './store/configureStore'
 import {setIsConnected, updateForecast} from './actions'
 import Navigator from './Navigator'
 
 import {recurringEventsSeed} from '../seeds'
 
-const store = configureStore()
 const persistConfig = { storage: AsyncStorage, whitelist: [] }
 
 class App extends Component {

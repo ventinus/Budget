@@ -1,4 +1,4 @@
-import {filter} from 'lodash'
+import {filter, each} from 'lodash'
 import * as actionTypes from './actionTypes'
 import {parameterizeName, zeroOutTime, formatDateCollection, calcForecast, formatAmount} from '../utils'
 
@@ -123,8 +123,10 @@ const removeRecurring = id => (dispatch, getState) => {
   return Promise.resolve()
 }
 
-const updateRecurring = (updates, skipProcessing = false) => (dispatch, getState) => {
-  const whichUpdates = skipProcessing ? updates : processRecurringProps(updates)
+const updateRecurring = (updates) => (dispatch, getState) => {
+  console.log('updaterecurring', updates, updates.skipProcessing)
+  // debugger
+  const whichUpdates = updates.skipProcessing ? updates : processRecurringProps(updates)
   dispatch({
     id: updates.id,
     updates: {
@@ -139,3 +141,30 @@ const updateRecurring = (updates, skipProcessing = false) => (dispatch, getState
 export const addRecurringEvent = dispatchAndUpdateForecast(addRecurring)
 export const removeRecurringEvent = dispatchAndUpdateForecast(removeRecurring)
 export const updateRecurringEvent = dispatchAndUpdateForecast(updateRecurring)
+
+export const updateProjection = updates => (dispatch, getState) => {
+  dispatch({
+    updates,
+    type: actionTypes.UPDATE_SETTINGS
+  })
+  const {recurringEvents, settings: {projection}} = getState()
+
+  each(recurringEvents, (val, id) => {
+    console.log('each', id)
+    dispatch(updateRecurringEvent({...val, id, skipProcessing: true}))
+    // dispatch({
+    //   id,
+    //   updates: {projection},
+    //   type: actionTypes.UPDATE_RECURRING_EVENT
+    // })
+  })
+
+  // return Promise.resolve()
+}
+
+// export const updateProjection = dispatchAndUpdateForecast(sendProjectionUpdate)
+
+export const updateSettings = updates => ({
+  updates,
+  type: actionTypes.UPDATE_SETTINGS
+})

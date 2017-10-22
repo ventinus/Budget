@@ -1,11 +1,12 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, TextInput } from 'react-native'
-import {commonStyles, colors} from '../variables'
+import {commonStyles, colors, currencies} from '../variables'
 
 const MONEY_RE = /(\d*\.?\d{0,2})/
 
-const AmountInput = ({value, onFocus, onChangeText, onBlur, options}) => {
+const AmountInput = ({value, onFocus, onChangeText, onBlur, options, currency}) => {
   const validateCents = input => input.match(MONEY_RE)[0]
 
   const onChange = input => onChangeText(validateCents(input))
@@ -13,7 +14,7 @@ const AmountInput = ({value, onFocus, onChangeText, onBlur, options}) => {
   return (
     <View style={commonStyles.inputPadding}>
       <View style={[commonStyles.borderBottom, commonStyles.splitBetween]}>
-        <Text style={{marginRight: 5}}>$</Text>
+        <Text style={{marginRight: 5}}>{currencies[currency].symbol}</Text>
         <TextInput
           style={styles.textInput}
           value={`${value}`.replace(/-/, '')}
@@ -41,4 +42,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AmountInput
+const mapStateToProps = ({settings: {currency}}) => ({currency})
+
+export default connect(mapStateToProps)(AmountInput)

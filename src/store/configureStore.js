@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 import rootReducer from '../reducers'
 
-export default function configureStore (initialState: any = undefined) {
+const configureStore = (initialState: any = undefined) => {
   const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent
   const logger = createLogger({
     predicate: (getState, action) => isDebuggingInChrome,
@@ -20,3 +20,5 @@ export default function configureStore (initialState: any = undefined) {
 
   return createStore(rootReducer, initialState, enhancer)
 }
+
+export default configureStore()

@@ -1,4 +1,6 @@
 import moment from 'moment'
+import store from '../store/configureStore'
+import {currencies} from '../variables'
 
 export const parameterizeName = (str) => str.toLowerCase().replace(/\s/g, '_')
 
@@ -37,8 +39,12 @@ export const zeroOutTime = date => {
 }
 
 export const moneyFormat = num => {
-  return `${num < 0 ? '-' : ''}$${Math.abs(num).toLocaleString()}`
+  const {settings: {currency}} = store.getState()
+  return `${num < 0 ? '-' : ''}${currencies[currency].symbol}${Math.abs(num).toLocaleString()}`
 }
+
+
+// const injectedMoneyFormat = connect
 
 export const uniqDays = (acc, cur) => {
   if (!!acc.find(o => o.isSame(cur, 'day'))) {

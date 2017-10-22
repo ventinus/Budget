@@ -1,3 +1,4 @@
+import {UPDATE_SETTINGS} from '../actions/actionTypes'
 
 const DEFAULT_STATE = {
   currency: 'USD',
@@ -8,7 +9,15 @@ const DEFAULT_STATE = {
 }
 
 const settings = (state = DEFAULT_STATE, action) => {
-  return state
+  switch (action.type) {
+    case UPDATE_SETTINGS:
+      return {
+        ...state,
+        ...action.updates
+      }
+    default:
+      return state
+  }
 }
 
 export default settings

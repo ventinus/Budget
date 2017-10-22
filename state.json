@@ -6,6 +6,7 @@
       "date": "",
       "interval": "", // one of intervalTypes
       "depositAccount": "[cashAccountId]",
+      "comfortableMin": "",
       "note": ""
     }
   },
