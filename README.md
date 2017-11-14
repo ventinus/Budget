@@ -22,12 +22,6 @@ A budgeting app built in react native
   * [Configuring Packager IP Address](#configuring-packager-ip-address)
 * [Adding Flow](#adding-flow)
 * [Customizing App Display Name and Icon](#customizing-app-display-name-and-icon)
-* [Sharing and Deployment](#sharing-and-deployment)
-  * [Publishing to Expo's React Native Community](#publishing-to-expos-react-native-community)
-  * [Building an Expo "standalone" app](#building-an-expo-standalone-app)
-  * [Ejecting from Create React Native App](#ejecting-from-create-react-native-app)
-    * [Build Dependencies (Xcode & Android Studio)](#build-dependencies-xcode-android-studio)
-    * [Should I Use ExpoKit?](#should-i-use-expokit)
 * [Troubleshooting](#troubleshooting)
   * [Networking](#networking)
   * [iOS Simulator won't open](#ios-simulator-wont-open)
@@ -73,6 +67,32 @@ Like `npm start`, but also attempts to open your app on a connected Android devi
 1. Find Genymotion’s copy of adb. On macOS for example, this is normally `/Applications/Genymotion.app/Contents/MacOS/tools/`.
 2. Add the Genymotion tools directory to your path (instructions for [Mac](http://osxdaily.com/2014/08/14/add-new-path-to-path-command-line/), [Linux](http://www.computerhope.com/issues/ch001647.htm), and [Windows](https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/)).
 3. Make sure that you can run adb from your terminal.
+
+## TODOS
+
+next:
+- switch to using a tab nav on the bottom of the screen rather than the navigation route. back button replaces current menu/close buttons
+- always show current cash acount totals in day breakdown
+- allow way to delete accounts
+  - should not be able to delete account if it has recurringEvents. or do a dependent destroy. maybe display message saying all associated events will be destroyed and must confirm
+
+future:
+- add sorting options to accounts page (name, date, amount... all 'columns') and up|down
+- add transactions to track single deposits and expenses?
+  - create/add label to transactions (labels are automatically created by account/recurrent event names)
+- style DayBreakdown page
+- create Summary container (home page?) with some stats
+  - lowest and highest amounts
+  - cumulative totals on a weekly/monthly basis (local state option)
+  - add some kind of trends overview (based on defined budgets)
+- add budgets and incorporate how budgets are utilized in forecast
+- add notification for falling below comfort level
+- add error messages for input fields
+- hide recurring events add button when no cash accounts have been created
+- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
+- add error message for trying to delete a cash account used in recurring events
+- prevent creating a recurring event when no cash accounts present
+- rewrite docs ;)
 
 ## Customizing App Display Name and Icon
 
@@ -134,25 +154,6 @@ You can optionally use a [plugin for your IDE or editor](https://flow.org/en/doc
 
 To learn more about Flow, check out [its documentation](https://flow.org/).
 
-## Sharing and Deployment
-
-Create React Native App does a lot of work to make app setup and development simple and straightforward, but it's very difficult to do the same for deploying to Apple's App Store or Google's Play Store without relying on a hosted service.
-
-### Publishing to Expo's React Native Community
-
-Expo provides free hosting for the JS-only apps created by CRNA, allowing you to share your app through the Expo client app. This requires registration for an Expo account.
-
-Install the `exp` command-line tool, and run the publish command:
-
-```
-$ npm i -g exp
-$ exp publish
-```
-
-### Building an Expo "standalone" app
-
-You can also use a service like [Expo's standalone builds](https://docs.expo.io/versions/latest/guides/building-standalone-apps.html) if you want to get an IPA/APK for distribution without having to build the native code yourself.
-
 ## Troubleshooting
 
 ### Networking
@@ -201,28 +202,4 @@ If you're not able to scan the QR code, make sure your phone's camera is focusin
 
 If this causes problems for you, you may want to try changing your terminal's color theme to have more contrast, or running Create React Native App from a different terminal. You can also manually enter the URL printed by the packager script in the Expo app's search bar to load it manually.
 
-### TODOS
-
-next:
-- switch to using a tab nav on the bottom of the screen rather than the navigation route. back button replaces current menu/close buttons
-- always show current cash acount totals in day breakdown
-- allow way to delete accounts
-  - should not be able to delete account if it has recurringEvents. or do a dependent destroy. maybe display message saying all associated events will be destroyed and must confirm
-
-future:
-- add sorting options to accounts page (name, date, amount... all 'columns') and up|down
-- add transactions to track single deposits and expenses?
-  - create/add label to transactions (labels are automatically created by account/recurrent event names)
-- style DayBreakdown page
-- create Summary container (home page?) with some stats
-  - lowest and highest amounts
-  - cumulative totals on a weekly/monthly basis (local state option)
-  - add some kind of trends overview (based on defined budgets)
-- add budgets and incorporate how budgets are utilized in forecast
-- add notification for falling below comfort level
-- add error messages for input fields
-- hide recurring events add button when no cash accounts have been created
-- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
-- add error message for trying to delete a cash account used in recurring events
-- prevent creating a recurring event when no cash accounts present
 
