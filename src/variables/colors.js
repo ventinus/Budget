@@ -7,6 +7,8 @@ const colors = {
   transparent: 'rgba(0,0,0,0)',
   red: '#e40023',
   green: '#2ec153',
+  yellow: '#ff9600',
+  purple: '#8315b2',
 
   mist: '#90afc5',
   stone: '#336b87',

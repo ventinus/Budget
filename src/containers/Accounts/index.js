@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Accounts from './Accounts'
 import {findEventsByType} from '../../utils'
 import {recurringEventTypes} from '../../variables'
+import {removeCashAccount, removeRecurringEvent} from '../../actions'
 
 const mapStateToProps = (state, ownProps) => ({
   budgets: state.budgets,
@@ -11,4 +12,4 @@ const mapStateToProps = (state, ownProps) => ({
   expenseEvents: findEventsByType(state.recurringEvents, recurringEventTypes.expense)
 })
 
-export default connect(mapStateToProps)(Accounts)
+export default connect(mapStateToProps, {removeCashAccount, removeRecurringEvent})(Accounts)

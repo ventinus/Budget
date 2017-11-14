@@ -25,9 +25,7 @@ const styles = StyleSheet.create({
 })
 
 const subsequentStyles = index => {
-  if (index === 0) return {}
-
-  return {
+  return index === 0 ? {} : {
     marginTop: 15,
     paddingTop: 15,
     borderTopWidth: StyleSheet.hairlineWidth,
@@ -35,18 +33,20 @@ const subsequentStyles = index => {
   }
 }
 
-const AccountGroup = ({name, data, themeColor, onAddPress, onAccountPress}) => {
+const AccountGroup = ({name, data, themeColor, onAddPress, onAccountPress, isEditing, onDeletePress}) => {
   return (
     <View>
       <View style={[commonStyles.splitBetween, styles.accountHeader, {backgroundColor: themeColor}]}>
         <Text style={{color: colors.white}}>{name}</Text>
-        <CircleButton
-          onPress={onAddPress}
-          text='+'
-          size={30}
-          style={{borderColor: colors.white}}
-          textStyle={{color: colors.white}}
-        />
+        {!!onAddPress &&
+          <CircleButton
+            onPress={onAddPress}
+            text='+'
+            size={30}
+            style={{borderColor: colors.white}}
+            textStyle={{color: colors.white}}
+          />
+        }
       </View>
 
       <View style={styles.accountBody}>
@@ -62,7 +62,9 @@ const AccountGroup = ({name, data, themeColor, onAddPress, onAccountPress}) => {
             topRightText={date}
             bottomLeftText={interval}
             rightText={amount}
-            onPress={() => {console.log('press', eventType), onAccountPress(parameterizeName(name), eventType)}}
+            isEditing={isEditing}
+            onPress={() => onAccountPress(parameterizeName(name), eventType)}
+            onDeletePress={() => onDeletePress(parameterizeName(name))}
           />
         )}
       </View>
@@ -79,7 +81,13 @@ AccountGroup.propProps = {
 
 const rowStyles = StyleSheet.create({
   container: {
-    flexDirection: 'column'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
+  main: {
+    flexDirection: 'column',
+    flex: 1
   },
   bar: {
     marginVertical: 3,
@@ -88,18 +96,31 @@ const rowStyles = StyleSheet.create({
   }
 })
 
-const AccountRow = ({style, leftText, topRightText, bottomLeftText, rightText, onPress}) => (
-  <TouchableOpacity style={[rowStyles.container, style]} onPress={onPress}>
-    <View style={commonStyles.splitBetween}>
-      <Text>{leftText}</Text>
-      <Text>{!topRightText ? '' : topRightText.toDateString()}</Text>
-    </View>
-    <View style={rowStyles.bar} />
-    <View style={commonStyles.splitBetween}>
-      <Text>{bottomLeftText}</Text>
-      <Text>{moneyFormat(rightText)}</Text>
-    </View>
-  </TouchableOpacity>
+const AccountRow = ({style, leftText, topRightText, bottomLeftText, rightText, onPress, isEditing, onDeletePress}) => (
+  <View style={[commonStyles.splitBetween, style]}>
+    {isEditing &&
+      <CircleButton
+        onPress={onDeletePress}
+        text='-'
+        size={20}
+        style={{borderColor: colors.red, backgroundColor: colors.red}}
+        textStyle={{color: colors.white}}
+      />
+    }
+    <TouchableOpacity
+      style={[rowStyles.main, { marginLeft: isEditing ? 15 : 0 }]}
+      onPress={onPress}>
+      <View style={commonStyles.splitBetween}>
+        <Text>{leftText}</Text>
+        <Text>{!topRightText ? '' : topRightText.toDateString()}</Text>
+      </View>
+      <View style={rowStyles.bar} />
+      <View style={commonStyles.splitBetween}>
+        <Text>{bottomLeftText}</Text>
+        <Text>{moneyFormat(rightText)}</Text>
+      </View>
+    </TouchableOpacity>
+  </View>
 )
 
 export default AccountGroup

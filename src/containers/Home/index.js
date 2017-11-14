@@ -5,7 +5,11 @@ import ScreenHOC from '../ScreenHOC'
 export default class Home extends Component {
   render() {
     return (
-      <ScreenHOC>
+      <ScreenHOC
+        header={(
+          <Text style={{textAlign: 'center'}}>Home Page</Text>
+        )}
+      >
         <View>
           <Text>Home page</Text>
         </View>

@@ -17,13 +17,39 @@ class Accounts extends Component {
     cashAccountId: '',
     recurringModalVisible: false,
     recurringEventId: '',
-    recurringEventType: ''
+    recurringEventType: '',
+    isEditing: false
+  }
+
+  constructor(props) {
+    super(props)
+
+    this._occupiedCashAccounts = this._getRemovableCashAccounts(props)
+    this._hasCashAccounts = props.cashAccounts.length > 0
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._occupiedCashAccounts = this._getRemovableCashAccounts(nextProps)
+    this._hasCashAccounts = nextProps.cashAccounts.length > 0
   }
 
   render() {
     const {budgets, cashAccounts, incomeEvents, expenseEvents} = this.props
+
     return (
-      <ScreenHOC style={layoutStyles}>
+      <ScreenHOC
+        header={(
+          <View style={[commonStyles.splitBetween, styles.header]}>
+            <View style={{flex: 1}}>
+              <TouchableOpacity style={styles.editBtn} onPress={this._toggleEditMode}>
+                <Text style={styles.editBtnText}>{this.state.isEditing ? 'Done' : 'Edit'}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={{textAlign: 'center', flex: 1}}>Accounts</Text>
+            <View style={{flex: 1}}></View>
+          </View>
+        )}
+      >
         <ScrollView style={[styles.container]}>
 
           <AccountGroup
@@ -32,23 +58,30 @@ class Accounts extends Component {
             themeColor={colors.green}
             onAddPress={this._revealNew('cashAccountId', 'cashModalVisible')}
             onAccountPress={this._setCashAccountId}
+            isEditing={this.state.isEditing}
+            onDeletePress={this._removeCash}
           />
 
           <AccountGroup
             name='Income Sources'
             data={incomeEvents}
             themeColor={colors.stone}
-            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.deposit)}
+            onAddPress={this._hasCashAccounts ? this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.deposit) : null}
             onAccountPress={this._setRecurringEvent}
+            isEditing={this.state.isEditing}
+            onDeletePress={this.props.removeRecurringEvent}
           />
 
           <AccountGroup
             name='Recurring Expenses'
             data={expenseEvents}
             themeColor={colors.autumn}
-            onAddPress={this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.expense)}
+            onAddPress={this._hasCashAccounts ? this._revealNew('recurringEventId', 'recurringModalVisible', 'recurringEventType', recurringEventTypes.expense) : null}
             onAccountPress={this._setRecurringEvent}
+            isEditing={this.state.isEditing}
+            onDeletePress={this.props.removeRecurringEvent}
           />
+
           <CashAccountModal
             isVisible={this.state.cashModalVisible}
             onClose={this._setModalVisibility('cash', false)}
@@ -69,12 +102,48 @@ class Accounts extends Component {
 
   _setModalVisibility = (name, isVisible) => () => this.setState({[`${name}ModalVisible`]: isVisible})
 
-  _revealNew = (type, modalKey, eventTypeKey, eventTypeVal) => () => this.setState({[type]: '', [modalKey]: true, [eventTypeKey]: eventTypeVal})
+  _revealNew = (type, modalKey, eventTypeKey, eventTypeVal) => () => {
+    this.setState({
+      [type]: '',
+      [modalKey]: true,
+      [eventTypeKey]: eventTypeVal,
+      isEditing: false
+    })
+  }
 
-  _setCashAccountId = accountId => this.setState({cashAccountId: accountId, cashModalVisible: true})
+  _setCashAccountId = accountId => {
+    this.setState({
+      cashAccountId: accountId,
+      cashModalVisible: true,
+      isEditing: false
+    })
+  }
 
   _setRecurringEvent = (eventId, eventType) => {
-    this.setState({recurringModalVisible: true, recurringEventId: eventId, recurringEventType: eventType})
+    this.setState({
+      recurringModalVisible: true,
+      recurringEventId: eventId,
+      recurringEventType: eventType,
+      isEditing: false
+    })
+  }
+
+  _toggleEditMode = () => {
+    this.setState({isEditing: !this.state.isEditing})
+  }
+
+  _getRemovableCashAccounts = props => {
+    return Object.values({...props.incomeEvents, ...props.expenseEvents}).reduce((a, {account}) => {
+      return a.includes(account) ? a : [...a, account]
+    }, [])
+  }
+
+  _removeCash = (cashAccountId) => {
+    if (this._occupiedCashAccounts.includes(cashAccountId)) {
+      console.log('this account is being used by recurring events. please remove/update those events before deleting this account')
+    } else {
+      this.props.removeCashAccount(cashAccountId)
+    }
   }
 }
 

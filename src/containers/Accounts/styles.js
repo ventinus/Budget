@@ -9,5 +9,12 @@ export default {
   },
   accountBody: {
     paddingHorizontal: metrics.sidePadding
+  },
+  header: {
+    paddingHorizontal: 10
+  },
+  editBtn: {},
+  editBtnText: {
+    color: colors.purple
   }
 }

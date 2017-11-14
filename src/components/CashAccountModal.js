@@ -41,7 +41,7 @@ class CashAccountModal extends Component {
       notificationIssue: {}
     }
 
-    this._requiredInputs = ['name', 'amount']
+    this._requiredInputs = ['name', 'amount', 'comfortableMin']
   }
 
   componentWillReceiveProps(nextProps) {
@@ -154,7 +154,7 @@ class CashAccountModal extends Component {
       this.props.updateCashAccount(this.props.accountId, this.state).then(nextState => {
         const {forecast: {alerts}, recurringEvents} = nextState
         const alertKeys = Object.keys(alerts)
-        const currentAlertKeys = Object.keys(currentAlerts)
+        const currentAlertKeys = currentAlerts ? Object.keys(currentAlerts) : []
         const diffAlert = alertKeys.find((val, i) => val !== currentAlertKeys[i])
 
         if (!diffAlert) {

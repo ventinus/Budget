@@ -1,9 +1,17 @@
 import React from 'react'
-import {View, StatusBar} from 'react-native'
-import {layoutStyles} from '../variables'
+import {View, StatusBar, StyleSheet} from 'react-native'
+import {layoutStyles, commonStyles} from '../variables'
 
-const ScreenHOC = ({children}) => (
+const headerStyles = {
+  paddingVertical: 15,
+  ...commonStyles.borderBottom
+}
+
+const ScreenHOC = ({header = null, children}) => (
   <View style={layoutStyles}>
+    {!!header &&
+      <View style={headerStyles}>{header}</View>
+    }
     {children}
   </View>
 )

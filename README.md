@@ -153,11 +153,6 @@ $ exp publish
 
 You can also use a service like [Expo's standalone builds](https://docs.expo.io/versions/latest/guides/building-standalone-apps.html) if you want to get an IPA/APK for distribution without having to build the native code yourself.
 
-
-#### Should I Use ExpoKit?
-
-If you have made use of Expo APIs while working on your project, then those API calls will stop working if you eject to a regular React Native project. If you want to continue using those APIs, you can eject to "React Native + ExpoKit" which will still allow you to build your own native code and continue using the Expo APIs. See the [ejecting guide](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md) for more details about this option.
-
 ## Troubleshooting
 
 ### Networking
@@ -226,3 +221,8 @@ future:
 - add budgets and incorporate how budgets are utilized in forecast
 - add notification for falling below comfort level
 - add error messages for input fields
+- hide recurring events add button when no cash accounts have been created
+- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
+- add error message for trying to delete a cash account used in recurring events
+- prevent creating a recurring event when no cash accounts present
+

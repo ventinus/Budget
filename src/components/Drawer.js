@@ -12,7 +12,8 @@
 // if isOpen is specified, it overrides the default opening and closing
 // and exclusively listens to componentWillReceiveProps
 
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
