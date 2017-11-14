@@ -71,10 +71,9 @@ Like `npm start`, but also attempts to open your app on a connected Android devi
 ## TODOS
 
 next:
-- switch to using a tab nav on the bottom of the screen rather than the navigation route. back button replaces current menu/close buttons
 - always show current cash acount totals in day breakdown
-- allow way to delete accounts
-  - should not be able to delete account if it has recurringEvents. or do a dependent destroy. maybe display message saying all associated events will be destroyed and must confirm
+- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
+- add error messages for input fields
 
 future:
 - add sorting options to accounts page (name, date, amount... all 'columns') and up|down
@@ -86,12 +85,8 @@ future:
   - cumulative totals on a weekly/monthly basis (local state option)
   - add some kind of trends overview (based on defined budgets)
 - add budgets and incorporate how budgets are utilized in forecast
-- add notification for falling below comfort level
-- add error messages for input fields
 - hide recurring events add button when no cash accounts have been created
-- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
-- add error message for trying to delete a cash account used in recurring events
-- prevent creating a recurring event when no cash accounts present
+- add error message for trying to delete a cash account used in recurring events (maybe confirm for a dependent destroy?)
 - rewrite docs ;)
 
 ## Customizing App Display Name and Icon
