@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import moment from 'moment'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import {Modal, AmountInput, DateSelect, IntervalTypesPicker, SimpleTextInput, DrawerPicker, NotificationModal} from '.'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import {Modal, AmountInput, DateSelect, IntervalTypesPicker, SimpleTextInput, DrawerPicker} from '.'
 import {parameterizeName} from '../utils'
 import {commonStyles, colors, intervalTypes, dateFormat} from '../variables'
 import {addRecurringEvent, removeRecurringEvent, updateRecurringEvent} from '../actions'
@@ -20,9 +20,7 @@ class RecurringEventModal extends Component {
     super(props)
 
     this.state = {
-      ...this._determineState(),
-      notificationIsVisible: false,
-      notificationIssue: {}
+      ...this._determineState()
     }
 
     this._setValues(props)
@@ -89,13 +87,6 @@ class RecurringEventModal extends Component {
             placeholder='Enter Note'
           />
         </ScrollView>
-
-        <NotificationModal
-          isVisible={this.state.notificationIsVisible}
-          onConfirm={this._onNotificationConfirm}
-          onCancel={this._onNotificationCancel}
-          issue={this.state.notificationIssue}
-        />
       </Modal>
     )
   }
@@ -167,7 +158,7 @@ class RecurringEventModal extends Component {
       id: this.props.eventId,
       eventType: this.props.eventType
     }).then(nextState => {
-      const {forecast: {alerts}, recurringEvents} = nextState
+      const {forecast: {alerts}, recurringEvents, cashAccounts} = nextState
       const alertKeys = Object.keys(alerts)
       const currentAlertKeys = currentAlerts ? Object.keys(currentAlerts) : []
       const diffAlert = alertKeys.find((val, i) => val !== currentAlertKeys[i])
@@ -175,17 +166,22 @@ class RecurringEventModal extends Component {
       if (!diffAlert) {
         this.props.onClose()
       } else {
-        this.setState({
-          notificationIsVisible: true,
-          notificationIssue: {[diffAlert]: alerts[diffAlert]}
-        })
+        const {account, message, ids} = alerts[diffAlert]
+
+        Alert.alert(
+          'Are you sure?',
+          `${cashAccounts[account].name} ${message} because of: ${ids.map(id => recurringEvents[id].name).join(', ')}\nFirst Date: ${moment(diffAlert, 'YYYY-MM-DD').format('MMM D, YYYY')}`,
+          [
+            {text: 'Cancel', onPress: this._onAlertCancel},
+            {text: 'Ok', onPress: this.props.onClose}
+          ]
+        )
       }
 
     })
   }
 
-  _onNotificationCancel = () => {
-    this.setState({notificationIsVisible: false})
+  _onAlertCancel = () => {
     // undo changed state
     if (this._isEditing) {
       this.props.updateRecurringEvent({
@@ -199,15 +195,6 @@ class RecurringEventModal extends Component {
     } else {
       this.props.removeRecurringEvent(parameterizeName(this.state.name))
     }
-  }
-
-  _onNotificationConfirm = () => {
-    this.setState({notificationIsVisible: false})
-
-    // when closing 2 modals simultaneously, the outermost modal needs to be delayed otherwise it wont close
-    setTimeout(() => {
-      this.props.onClose()
-    }, 1)
   }
 }
 

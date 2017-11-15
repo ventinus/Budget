@@ -78,7 +78,8 @@ export const updateCashAccount = (id, updates) => (dispatch, getState) => {
       const eventUpdates = {
         ...e,
         id: parameterizeName(e.name),
-        account: parameterizeName(updates.name)
+        account: parameterizeName(updates.name),
+        skipProcessing: true
       }
 
       dispatch(updateRecurring(eventUpdates, true))

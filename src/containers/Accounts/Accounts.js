@@ -4,10 +4,12 @@ import {
   ScrollView,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 import {AccountGroup, CashAccountModal, RecurringEventModal} from '../../components'
 import {layoutStyles, commonStyles, colors, recurringEventTypes} from '../../variables'
+import {parameterizeName} from '../../utils'
 
 import styles from './styles.js'
 
@@ -140,10 +142,28 @@ class Accounts extends Component {
 
   _removeCash = (cashAccountId) => {
     if (this._occupiedCashAccounts.includes(cashAccountId)) {
-      console.log('this account is being used by recurring events. please remove/update those events before deleting this account')
+      Alert.alert(
+        'Warning:\nThis account is being used by recurring events.',
+        'Failure to remove/update those events before confirming will result in their removal',
+        [
+          {text: 'Cancel', onPress: () => {}},
+          {text: 'Ok', onPress: () => this._confirmCashRemoval(cashAccountId)}
+        ]
+      )
     } else {
       this.props.removeCashAccount(cashAccountId)
     }
+  }
+
+  _confirmCashRemoval = cashAccountId => {
+    this.props.removeCashAccount(cashAccountId)
+    // console.log(this.props)
+    const eventIds = [...this.props.incomeEvents, ...this.props.expenseEvents]
+      .filter(e => e.account === cashAccountId).map(e => parameterizeName(e.name))
+    eventIds.forEach(this.props.removeRecurringEvent)
+    //   console.log(a, c, k)
+    //   debugger
+    // })
   }
 }
 

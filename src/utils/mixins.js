@@ -82,7 +82,7 @@ export const calcForecast = ({
       }
 
       const alert = {
-        message: newAmount >= 0 ? 'Account balance is below the comfort level' : 'Account balance is overdrawn',
+        message: newAmount >= 0 ? 'account balance is below the comfort level' : 'account balance is overdrawn',
         ids: arr.map(v => v.id),
         account,
       }

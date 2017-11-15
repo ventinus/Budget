@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import { View, Text, StyleSheet, Picker, TextInput } from 'react-native'
-import {Modal, SimpleTextInput, AmountInput, NotificationModal} from '.'
+import { View, Text, StyleSheet, Picker, TextInput, Alert } from 'react-native'
+import moment from 'moment'
+import {Modal, SimpleTextInput, AmountInput} from '.'
 import {addCashAccount, updateCashAccount} from '../actions'
 import {commonStyles, colors} from '../variables'
 import {parameterizeName} from '../utils'
@@ -36,9 +37,7 @@ class CashAccountModal extends Component {
     this._setValues(props)
 
     this.state = {
-      ...this._determineState(props),
-      notificationIsVisible: false,
-      notificationIssue: {}
+      ...this._determineState(props)
     }
 
     this._requiredInputs = ['name', 'amount', 'comfortableMin']
@@ -82,12 +81,6 @@ class CashAccountModal extends Component {
           onFocus={this._onTextFocus.bind(this, 'comfortableMin')}
           onChangeText={this._onTextChange.bind(this, 'comfortableMin')}
           options={{placeholder: PLACEHOLDERS.comfortableMin}}
-        />
-        <NotificationModal
-          isVisible={this.state.notificationIsVisible}
-          onConfirm={this._onNotificationConfirm}
-          onCancel={this._onNotificationCancel}
-          issue={this.state.notificationIssue}
         />
       </Modal>
     )
@@ -134,17 +127,7 @@ class CashAccountModal extends Component {
     return validInputs
   }
 
-  _onNotificationConfirm = () => {
-    this.setState({notificationIsVisible: false})
-
-    setTimeout(() => {
-      this.props.onClose()
-    }, 1)
-  }
-
-  _onNotificationCancel = () => {
-    this.setState({notificationIsVisible: false})
-
+  _onAlertCancel = () => {
     this.props.updateCashAccount(this._currAccountId, this._currAccount)
   }
 
@@ -152,7 +135,7 @@ class CashAccountModal extends Component {
     const currentAlerts = this.props.alerts
     if (this._isEditing) {
       this.props.updateCashAccount(this.props.accountId, this.state).then(nextState => {
-        const {forecast: {alerts}, recurringEvents} = nextState
+        const {forecast: {alerts}, recurringEvents, cashAccounts} = nextState
         const alertKeys = Object.keys(alerts)
         const currentAlertKeys = currentAlerts ? Object.keys(currentAlerts) : []
         const diffAlert = alertKeys.find((val, i) => val !== currentAlertKeys[i])
@@ -160,10 +143,16 @@ class CashAccountModal extends Component {
         if (!diffAlert) {
           this.props.onClose()
         } else {
-          this.setState({
-            notificationIsVisible: true,
-            notificationIssue: {[diffAlert]: alerts[diffAlert]}
-          })
+          const {account, message, ids} = alerts[diffAlert]
+
+          Alert.alert(
+            'Are you sure?',
+            `${cashAccounts[account].name} ${message} because of: ${ids.map(id => recurringEvents[id].name).join(', ')}\nFirst Date: ${moment(diffAlert, 'YYYY-MM-DD').format('MMM D, YYYY')}`,
+            [
+              {text: 'Cancel', onPress: this._onAlertCancel},
+              {text: 'Ok', onPress: this.props.onClose}
+            ]
+          )
         }
       })
     } else {

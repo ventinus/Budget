@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
   accountHeader: {
     backgroundColor: colors.white,
     paddingHorizontal: metrics.sidePadding,
-    paddingVertical: 5
+    paddingVertical: 5,
+    height: 40
   },
   accountBody: {
     paddingHorizontal: metrics.sidePadding,
@@ -82,8 +83,7 @@ AccountGroup.propProps = {
 const rowStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-
+    justifyContent: 'space-between'
   },
   main: {
     flexDirection: 'column',
