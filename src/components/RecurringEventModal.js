@@ -52,11 +52,12 @@ class RecurringEventModal extends Component {
           <SimpleTextInput
             value={this.state.name}
             onChangeText={this._onTextChange.bind(this, 'name')}
-            placeholder='Enter Name'
+            label='Name'
           />
           <AmountInput
             value={this.state.amount}
             onChangeText={this._onTextChange.bind(this, 'amount')}
+            label='Amount'
             options={{placeholder: '0.00'}}
           />
           <DrawerPicker

@@ -8,12 +8,6 @@ import {addCashAccount, updateCashAccount} from '../actions'
 import {commonStyles, colors} from '../variables'
 import {parameterizeName} from '../utils'
 
-const PLACEHOLDERS = {
-  name: 'Enter Account Name',
-  amount: 'Account Balance',
-  comfortableMin: 'Comforable Minimum'
-}
-
 const DEFAULT_STATE = {
   name: '',
   amount: '',
@@ -66,21 +60,18 @@ class CashAccountModal extends Component {
       >
         <SimpleTextInput
           value={this.state.name}
-          onFocus={this._onTextFocus.bind(this, 'name')}
           onChangeText={this._onTextChange.bind(this, 'name')}
-          placeholder={PLACEHOLDERS.name}
+          label='Name'
         />
         <AmountInput
           value={this.state.amount}
-          onFocus={this._onTextFocus.bind(this, 'amount')}
           onChangeText={this._onTextChange.bind(this, 'amount')}
-          options={{placeholder: PLACEHOLDERS.amount}}
+          label='Balance'
         />
         <AmountInput
           value={this.state.comfortableMin}
-          onFocus={this._onTextFocus.bind(this, 'comfortableMin')}
           onChangeText={this._onTextChange.bind(this, 'comfortableMin')}
-          options={{placeholder: PLACEHOLDERS.comfortableMin}}
+          label='Comfortable Minimum'
         />
       </Modal>
     )
@@ -96,12 +87,6 @@ class CashAccountModal extends Component {
     this._isEditing = this._currAccountId.length > 0
     this._cashIds = Object.keys(props.cashAccounts)
     this._filteredIds = this._cashIds.filter(id => id !== this._currAccountId)
-  }
-
-  _onTextFocus = (category) => {
-    if (this.state[category] === PLACEHOLDERS[category]) {
-      this.setState({[category]: ''})
-    }
   }
 
   _onTextChange = (category, text) => this.setState({[category]: text})

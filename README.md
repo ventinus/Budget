@@ -72,9 +72,7 @@ Like `npm start`, but also attempts to open your app on a connected Android devi
 
 next:
 - always show current cash acount totals in day breakdown
-- add labels to form fields (as are done in "Date", "Repeat Every", etc.)
 - add error messages for input fields
-- adjust projection amount when type changes (prevent looking ahead 12 years)
 
 future:
 - add sorting options to accounts page (name, date, amount... all 'columns') and up|down
@@ -86,7 +84,6 @@ future:
   - cumulative totals on a weekly/monthly basis (local state option)
   - add some kind of trends overview (based on defined budgets)
 - add budgets and incorporate how budgets are utilized in forecast
-- add error message for trying to delete a cash account used in recurring events (maybe confirm for a dependent destroy?)
 - rewrite docs ;)
 
 ## Customizing App Display Name and Icon

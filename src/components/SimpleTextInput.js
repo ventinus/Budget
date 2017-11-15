@@ -4,23 +4,21 @@ import { View, Text, StyleSheet, TextInput } from 'react-native'
 import {commonStyles, colors, metrics} from '../variables'
 
 const styles = StyleSheet.create({
-  borderBottom: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.black,
-  },
   textInput: {
     paddingHorizontal: 10,
-    height: metrics.inputHeight,
+    height: 40,
     backgroundColor: colors.white,
     fontSize: 15,
     color: colors.black,
-    flexGrow: 2
+    flexGrow: 2,
+    textAlign: 'right'
   }
 })
 
 const SimpleTextInput = (props) => (
   <View style={commonStyles.inputPadding}>
-    <View style={styles.borderBottom}>
+    <View style={[commonStyles.borderBottom, commonStyles.splitBetween, {paddingLeft: 10}]}>
+      <Text style={{marginRight: 5}}>{props.label}:</Text>
       <TextInput
         style={styles.textInput}
         multiline={false}

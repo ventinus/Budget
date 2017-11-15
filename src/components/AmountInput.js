@@ -6,15 +6,15 @@ import {commonStyles, colors, currencies} from '../variables'
 
 const MONEY_RE = /(\d*\.?\d{0,2})/
 
-const AmountInput = ({value, onFocus, onChangeText, onBlur, options, currency}) => {
+const AmountInput = ({value, onFocus, onChangeText, onBlur, label, options, currency}) => {
   const validateCents = input => input.match(MONEY_RE)[0]
 
   const onChange = input => onChangeText(validateCents(input))
 
   return (
     <View style={commonStyles.inputPadding}>
-      <View style={[commonStyles.borderBottom, commonStyles.splitBetween]}>
-        <Text style={{marginRight: 5}}>{currencies[currency].symbol}</Text>
+      <View style={[commonStyles.borderBottom, commonStyles.splitBetween, {paddingLeft: 10}]}>
+        <Text style={{marginRight: 5}}>{label}: {currencies[currency].symbol}</Text>
         <TextInput
           style={styles.textInput}
           value={`${value}`.replace(/-/, '')}
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     fontSize: 15,
     color: colors.black,
-    flexGrow: 2
+    flexGrow: 2,
+    textAlign: 'right'
   }
 })
 
