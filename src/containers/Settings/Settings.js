@@ -30,6 +30,7 @@ export default class Settings extends Component {
 
   render() {
     const {currency, projection} = this.props.settings
+    console.log(projection, this._projectionDistances[projection.type])
     return (
       <ScreenHOC>
         <ScrollView style={{flex: 1}}>
@@ -49,6 +50,7 @@ export default class Settings extends Component {
               onValueChange={this._updateProjection('count')}>
               {this._numMap(this._projectionDistances[projection.type])}
             </Picker>
+
             <Picker
               style={styles.picker}
               selectedValue={projection.type}
@@ -73,16 +75,15 @@ export default class Settings extends Component {
     this.props.updateProjection({
       projection: {
         ...this.props.settings.projection,
+        count: key === 'type' ? 1 : this.props.settings.projection.count,
         [key]: value
       }
     })
   }
 
-  // _pickerItem = (num) =>
-
   _numMap = (end) => {
     const items = []
-    for (let i = 1; i < end; i++) {
+    for (let i = 1; i <= end; i++) {
       items.push((<Item key={i} value={i} label={`${i}`} />))
     }
     return items
